@@ -1,13 +1,10 @@
-// React packages
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals';
-// Styles
-import './bootstrap.min.css'
-import './index.css';
-// High level components
-import App from './App';
 
+import './index.css';
+import './bootstrap.min.css'
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
