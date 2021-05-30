@@ -5,14 +5,14 @@ import reportWebVitals from './reportWebVitals';
 // Styles
 import './bootstrap.min.css'
 import './index.css';
-// High level Components
+// High level components
 import App from './App';
 
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <App />
-  </React.StrictMode>,
+  </>,
   document.getElementById('root')
 );
 
