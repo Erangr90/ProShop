@@ -14,7 +14,7 @@ dotenv.config()
 import  products from './data/products.js'
 // Initialize DB connection
 connectDB()
-// Routes
+// Routs
 app.get('/',(req,res)=>{
     res.send('API is running')
 })
