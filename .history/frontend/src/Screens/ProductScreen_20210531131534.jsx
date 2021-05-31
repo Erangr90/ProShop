@@ -11,7 +11,6 @@ const ProductScreen = ({match}) => {
 
     const [product,setProduct] = useState({})
 
-
     useEffect(()=>{
 
         const getProduct = async ()=>{
