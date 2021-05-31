@@ -6,7 +6,7 @@ const app = express()
 // Initialize environment variables
 dotenv.config()
 // Data
-import  products from './data/products.js'
+const products = require('./data/products');
 // Routs
 app.get('/',(req,res)=>{
     res.send('API is running')
