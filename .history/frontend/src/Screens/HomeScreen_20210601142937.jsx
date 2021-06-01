@@ -12,9 +12,6 @@ const HomeScreen = () => {
 
     const dispatch = useDispatch()
 
-    const productsList = useSelector(state => state.productsList)
-    const {loading, products,error} = productsList
-
     useEffect(()=>{
 
         dispatch(ProductsList())
@@ -22,16 +19,18 @@ const HomeScreen = () => {
 
     },[dispatch] )
 
+    const products = []
+
     return (
         <>
         <h1>Last products</h1>
-        {loading ? <h2>Loading...</h2> : error ? <h3>{error}</h3> : <Row>
+        <Row>
             {products.map(product=>(
                 <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product}/>
                 </Col>
             ))}
-        </Row> }
+        </Row>
         </>
     )
 }
