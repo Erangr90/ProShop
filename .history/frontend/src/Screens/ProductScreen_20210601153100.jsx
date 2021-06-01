@@ -8,27 +8,26 @@ import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-// Actions
-import { getProduct } from '../actions/productsActions'
 
 const ProductScreen = ({match}) => {
 
     const dispatch = useDispatch()
 
-    const productDetails = useSelector(state => state.productDetails)
+    const getProduct = useSelector(state => state.getProduct)
 
-    const {loading,error,product} = productDetails
+    const {loading,error,product} = getProduct
 
 
 
 
     useEffect(()=>{
+        getProduct()
 
-        dispatch(getProduct(match.params.id))
+        dispatch(getProduct)
 
 
 
-    },[dispatch, match.params.id] )
+    },[dispatch, getProduct, match.params.id] )
 
 
 

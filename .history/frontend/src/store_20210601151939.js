@@ -9,8 +9,8 @@ import { productListReducer,getProductReducer } from './reducers/productReducers
 
 // Reducer for create store (which contain all the reducers)
 const reducer = combineReducers({
-    productsList: productListReducer,
-    productDetails: getProductReducer,
+    productsList:productListReducer,
+    getProduct: getProductReducer,
 })
 // The first state of the web page
 const initialState = {}

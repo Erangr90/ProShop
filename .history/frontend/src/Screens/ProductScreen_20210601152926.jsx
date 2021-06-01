@@ -15,20 +15,20 @@ const ProductScreen = ({match}) => {
 
     const dispatch = useDispatch()
 
-    const productDetails = useSelector(state => state.productDetails)
+    const getProduct = useSelector(state => state.getProduct)
 
-    const {loading,error,product} = productDetails
+    const {loading,error,product} = getProduct
 
 
 
 
     useEffect(()=>{
 
-        dispatch(getProduct(match.params.id))
+        dispatch( getProduct(match.params.id))
 
 
 
-    },[dispatch, match.params.id] )
+    },[dispatch, getProduct, match.params.id] )
 
 
 

@@ -24,7 +24,7 @@ export const productListReducer = (state= {products:[]}, action)=>{
 
 
 // Get single product
-export const getProductReducer = (state= {product:{}}, action)=>{
+export const productReducer = (state= {product:{}}, action)=>{
 
     switch (action.type) {
         case PRODUCT_REQUEST:
