@@ -11,9 +11,9 @@ import Loader from '../components/Loader'
 // Actions
 import { getProduct } from '../actions/productsActions'
 
-const ProductScreen = ({history ,match}) => {
+const ProductScreen = ({match}) => {
 
-    const [qty,setQty] = useState(1)
+    const [qty,setQty] = useState(0)
 
     const dispatch = useDispatch()
 
@@ -30,11 +30,9 @@ const ProductScreen = ({history ,match}) => {
 
 
 
-    },[dispatch, match.params.id])
+    },[dispatch, match.params.id] )
 
-    const addToCartHandler = ()=> {
-        history.push('/cart/' + match.params.id +'?qty=' + qty)
-    }
+    console.log([...Array(product.countInStock).keys()])
 
 
 
@@ -57,10 +55,10 @@ const ProductScreen = ({history ,match}) => {
                             <h2>{product.name}</h2>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Rating value={Number(product.rating)} text={product.numReviews + ' reviews'}/>
+                            <Rating value={product.rating} text={product.numReviews + ' reviews'}/>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Price: ${Number(product.price)}
+                            Price: ${product.price}
                         </ListGroup.Item>
                         <ListGroup.Item>
                             Description: {product.description}
@@ -76,7 +74,7 @@ const ProductScreen = ({history ,match}) => {
                                         Price:
                                     </Col>
                                     <Col>
-                                        <strong>${Number(product.price)}</strong>
+                                        <strong>${product.price}</strong>
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
@@ -86,30 +84,14 @@ const ProductScreen = ({history ,match}) => {
                                         Status:
                                     </Col>
                                     <Col>
-                                        {Number(product.countInStock)> 0 ? 'In stock' : 'Out of stock' }
+                                        {product.countInStock > 0 ? 'In stock' : 'Out of stock' }
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
 
-                            {Number(product.countInStock) > 0 && (
-                                <ListGroup.Item>
-                                    <Row>
-                                        <Col>Qty:</Col>
-                                        <Col>
-                                            <Form.Control as='select' value={qty} onChange={(e)=> setQty(e.target.value)}  >
-                                                {
-                                                    [...Array(Number(product.countInStock)).keys()].map( x => <option key={x+1} value={x+1}>{x+1}</option>)
-                                                }
-                                            </Form.Control>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>
-                            )
-                            }
-
                             <ListGroup.Item>
                                 <Row>
-                                <Button className='btn-block' type='button' disabled={Number(product.countInStock )=== 0 } onClick={addToCartHandler} >Add to Cart</Button>
+                                <Button className='btn-block' type='button' disabled={product.countInStock === 0 }>Add to Cart</Button>
                                 </Row>
                             </ListGroup.Item>
                         </ListGroup>
