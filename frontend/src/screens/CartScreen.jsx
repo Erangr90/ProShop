@@ -25,7 +25,7 @@ const CartScreen = ({match, location, history }) => {
     }, [dispatch, productId, qty])
 
     const removeFormCartHandler = (id)=>{
-        // dispatch(removeFormCart(id))
+        dispatch(removeFormCart(id))
     }
 
     const checkOutHandler = ()=>{
