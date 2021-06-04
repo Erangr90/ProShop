@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 // Reducers
 import { productListReducer,getProductReducer } from './reducers/productReducers'
+import { cartReducer } from './reducers/cartReducers'
 
 
 
@@ -11,9 +12,17 @@ import { productListReducer,getProductReducer } from './reducers/productReducers
 const reducer = combineReducers({
     productsList: productListReducer,
     productDetails: getProductReducer,
+    cart : cartReducer,
 })
+
+const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
+
+
+
 // The first state of the web page
-const initialState = {}
+const initialState = {
+    cart: { cartItems: cartItemsFromStorage }
+}
 
 // Middlewares array for apply include thunk(to make asynchronous request)
 const middlewares =[thunk]
