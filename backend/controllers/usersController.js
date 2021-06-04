@@ -2,6 +2,8 @@
 import asyncHandler from 'express-async-handler'
 // Models
 import User from '../models/userModel.js'
+// Middleware
+import generateToken from '../utils/generateToken.js'
 
 
 // @dec:    Auth user & get token
@@ -19,7 +21,7 @@ if(user && (await user.matchPassword(password))){
         name:user.name,
         email:user.email,
         isAdmin:user.isAdmin,
-        token:null
+        token:generateToken(user._id)
     })
 }else{
 
