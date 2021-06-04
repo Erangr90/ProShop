@@ -8,8 +8,11 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import connectDB from './config/db.js'
 // API Routes
 import productsRoutes from './routes/productsRoutes.js'
+import usersRoutes from './routes/usersRoutes.js'
 // Initialize express server
 const app = express()
+// Use Json on req body
+app.use(express.json())
 // Initialize environment variables
 dotenv.config()
 // Data
@@ -21,6 +24,7 @@ app.get('/',(req,res)=>{
     res.send('API is running')
 })
 app.use('/api/products',productsRoutes)
+app.use('/api/users',usersRoutes)
 // Middlewares
 app.use(notFound)
 app.use(errorHandler)
