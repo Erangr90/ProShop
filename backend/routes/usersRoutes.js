@@ -2,8 +2,11 @@
 import  express from 'express'
 // Initialize express Router
 const router = express.Router()
+// Actions
+import { protect } from '../middleware/authMiddleware.js'
 import {
-    authUser
+    authUser,
+    getUserProfile
 } from '../controllers/usersController.js'
 
 
@@ -11,6 +14,8 @@ import {
 // Routes
 
 router.post('/login',authUser)
+
+router.route('/profile').get(protect,getUserProfile)
 
 
 
