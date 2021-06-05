@@ -6,7 +6,8 @@ const router = express.Router()
 import { protect } from '../middleware/authMiddleware.js'
 import {
     authUser,
-    getUserProfile
+    getUserProfile,
+    registerUser
 } from '../controllers/usersController.js'
 
 
@@ -16,6 +17,8 @@ import {
 router.post('/login',authUser)
 
 router.route('/profile').get(protect,getUserProfile)
+
+router.route('/').post(registerUser)
 
 
 
