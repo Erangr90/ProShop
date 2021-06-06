@@ -7,7 +7,7 @@ import { Col, Row, Button, Form } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 // Actions
-import { getUserProfile } from '../actions/usersActions'
+import { getUserProfile ,updateUserProfile } from '../actions/usersActions'
 
 
 
@@ -24,6 +24,9 @@ const ProfileScreen = ({location,history}) => {
 
         const userLogin = useSelector(state => state.userLogin)
         const {userInfo} = userLogin
+
+        const updateProfile = useSelector(state => state.updateProfile)
+        const{success} = updateProfile
 
         const dispatch = useDispatch()
 
@@ -51,7 +54,7 @@ const ProfileScreen = ({location,history}) => {
                 setMessage('Passwords do not match')
             }else{
 
-                // dispatch(register(name,email,password))
+                dispatch(updateUserProfile({id:user._id,name,email,password}))
 
             }
 
@@ -63,6 +66,7 @@ const ProfileScreen = ({location,history}) => {
 
             <h2>User Profile</h2>
             {message && <Message variant='danger'>{message}</Message>}
+            {success && <Message variant='success'>Profile updated !</Message>}
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader/>}
 

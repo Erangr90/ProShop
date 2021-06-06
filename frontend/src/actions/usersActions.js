@@ -9,7 +9,10 @@ import {
     USER_REGISTER_FAIL,
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESSES,
-    USER_DETAILS_FAIL
+    USER_DETAILS_FAIL,
+    USER_UPDATE_PROFILE_REQUEST,
+    USER_UPDATE_PROFILE_SUCCESSES,
+    USER_UPDATE_PROFILE_FAIL
 } from '../constants/usersConstants'
 // Node packages
 import axios from 'axios'
@@ -127,6 +130,41 @@ export const getUserProfile = (id)=> async(dispatch,getState)=> {
 
         dispatch({
             type: USER_DETAILS_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
+
+}
+
+// Update login user Profile
+export const updateUserProfile = (user)=> async(dispatch,getState)=> {
+    try {
+        dispatch({type: USER_UPDATE_PROFILE_REQUEST })
+
+        const {userLogin:{userInfo}} = getState()
+
+        // Make a json request
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer '+userInfo.token
+            }
+        }
+        // (url,data,config)
+        const {data}  = await axios.put('/api/users/profile',user,config)
+
+        dispatch({
+            type: USER_UPDATE_PROFILE_SUCCESSES,
+            payload: data
+        })
+
+
+
+    } catch (error) {
+
+        dispatch({
+            type: USER_UPDATE_PROFILE_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
 
