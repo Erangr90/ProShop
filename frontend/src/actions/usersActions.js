@@ -12,7 +12,8 @@ import {
     USER_DETAILS_FAIL,
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESSES,
-    USER_UPDATE_PROFILE_FAIL
+    USER_UPDATE_PROFILE_FAIL,
+    USER_UPDATE_PROFILE_RESET
 } from '../constants/usersConstants'
 // Node packages
 import axios from 'axios'
@@ -140,6 +141,8 @@ export const getUserProfile = (id)=> async(dispatch,getState)=> {
 // Update login user Profile
 export const updateUserProfile = (user)=> async(dispatch,getState)=> {
     try {
+
+
         dispatch({type: USER_UPDATE_PROFILE_REQUEST })
 
         const {userLogin:{userInfo}} = getState()
@@ -158,7 +161,34 @@ export const updateUserProfile = (user)=> async(dispatch,getState)=> {
             type: USER_UPDATE_PROFILE_SUCCESSES,
             payload: data
         })
+        // Login the user after register
+        dispatch({
+            type: USER_LOGIN_SUCCESSES,
+            payload: data
+        })
 
+        // Set user info on localStorage
+        localStorage.setItem('userInfo',JSON.stringify(data))
+
+
+
+    } catch (error) {
+
+        dispatch({
+            type: USER_UPDATE_PROFILE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
+
+}
+
+// Rest login user Profile
+export const resetUserProfile = ()=> async(dispatch)=> {
+    try {
+
+
+        dispatch({type: USER_UPDATE_PROFILE_RESET })
 
 
     } catch (error) {
