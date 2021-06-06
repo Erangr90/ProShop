@@ -7,7 +7,8 @@ import { protect } from '../middleware/authMiddleware.js'
 import {
     authUser,
     getUserProfile,
-    registerUser
+    registerUser,
+    updateUserProfile
 } from '../controllers/usersController.js'
 
 
@@ -18,7 +19,7 @@ router.post('/login',authUser)
 
 router.route('/profile').get(protect,getUserProfile)
 
-router.route('/').post(registerUser)
+router.route('/').post(registerUser).put(protect,updateUserProfile)
 
 
 
