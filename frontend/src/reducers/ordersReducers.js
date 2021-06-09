@@ -35,8 +35,8 @@ export const orderCreateReducer = (state = {}, action) => {
   }
 }
 
-// Get order by id
-export const getOrderByIdReducer = (state = {orderItems:[],shippingAddress:{}}, action) => {
+// Get order details
+export const getOrderDetailsReducer = (state = { loading:true, orderItems:[],shippingAddress:{}}, action) => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST:
       return {
