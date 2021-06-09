@@ -5,7 +5,8 @@ const router = express.Router()
 // Actions
 import { protect } from '../middleware/authMiddleware.js'
 import {
-    addOrderItems
+    addOrderItems,
+    getOrderById
 
 } from '../controllers/ordersController.js'
 
@@ -13,7 +14,10 @@ import {
 
 // Routes
 
+
+
 router.route('/').post(protect,addOrderItems)
+router.route('/:id').get(protect,getOrderById)
 
 
 
