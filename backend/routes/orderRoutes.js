@@ -6,7 +6,8 @@ const router = express.Router()
 import { protect } from '../middleware/authMiddleware.js'
 import {
     addOrderItems,
-    getOrderById
+    getOrderById,
+    updateOrderToPaid
 
 } from '../controllers/ordersController.js'
 
@@ -17,7 +18,10 @@ import {
 
 
 router.route('/').post(protect,addOrderItems)
+
+
 router.route('/:id').get(protect,getOrderById)
+router.route('/:id/pay').put(protect,updateOrderToPaid)
 
 
 

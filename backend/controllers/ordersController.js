@@ -52,7 +52,46 @@ const getOrderById = asyncHandler( async(req,res) => {
 
 })
 
+// @dec:    Update order to paid
+// @route:  PUT /api/orders/:id/pay
+// @access: Privet
+const updateOrderToPaid = asyncHandler( async(req,res) => {
+
+    const order = await Order.findById(req.params.id)
+
+    if(order){
+
+    order.isPaid = true
+    order.paidAt = Date.now()
+    order.paymentResult = {
+        id:req.body.id,
+        status:req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address
+    }
+
+    try {
+        const updatedOrder = await order.save()
+        res.json(updatedOrder)
+
+    } catch (error) {
+
+        throw error
+    }
+
+    }else{
+        res.status(404)
+        throw new Error('Order not found')
+
+    }
+
+
+
+})
+
+
 export {
     addOrderItems,
-    getOrderById
+    getOrderById,
+    updateOrderToPaid
 }
