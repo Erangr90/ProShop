@@ -9,6 +9,7 @@ import connectDB from './config/db.js'
 // API Routes
 import productsRoutes from './routes/productsRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
+import ordersRoutes from './routes/orderRoutes.js'
 // Initialize express server
 const app = express()
 // Use Json on req body
@@ -25,6 +26,7 @@ app.get('/',(req,res)=>{
 })
 app.use('/api/products',productsRoutes)
 app.use('/api/users',usersRoutes)
+app.use('/api/orders',ordersRoutes)
 // Middlewares
 app.use(notFound)
 app.use(errorHandler)
