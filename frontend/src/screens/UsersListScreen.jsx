@@ -10,19 +10,30 @@ import Loader from '../components/Loader'
 // Actions
 import { getAllUsers } from '../actions/usersActions'
 
-const UsersListScreen = () => {
+const UsersListScreen = ({history}) => {
 
     const dispatch = useDispatch()
 
     const allUsers = useSelector(state => state.allUsers)
     const {loading,error,users} = allUsers
 
+    const userLogin = useSelector(state => state.userLogin)
+    const{userInfo} = userLogin
+
     useEffect(() => {
 
-        dispatch(getAllUsers())
+        if(userInfo && userInfo.isAdmin){
+
+            dispatch(getAllUsers())
 
 
-    }, [dispatch])
+        }else{
+
+            history.push('/login')
+
+        }
+
+    }, [dispatch, history, userInfo])
 
     const deleteHandler = (id)=>{
 
@@ -31,7 +42,7 @@ const UsersListScreen = () => {
     return (
         <>
         <h1>Users</h1>
-        {loading ? <Loader/> : error ? <Message value='danger'>{error}</Message> : (
+        {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
             <Table striped bordered hover responsive className='table-sm'>
                 <thead>
                     <tr>
