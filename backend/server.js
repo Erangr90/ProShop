@@ -21,12 +21,19 @@ import  products from './data/products.js'
 // Initialize DB connection
 connectDB()
 // Routes
-app.get('/',(req,res)=>{
-    res.send('API is running')
-})
 app.use('/api/products',productsRoutes)
 app.use('/api/users',usersRoutes)
 app.use('/api/orders',ordersRoutes)
+
+
+app.get('/',(req,res)=>{
+    res.send('API is running')
+})
+app.get('/api/config/paypal',(req,res)=>{
+    res.send(process.env.PAYPAL_CLIENT_ID)
+})
+
+
 // Middlewares
 app.use(notFound)
 app.use(errorHandler)
