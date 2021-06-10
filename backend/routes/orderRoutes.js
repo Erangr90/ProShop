@@ -7,7 +7,8 @@ import { protect } from '../middleware/authMiddleware.js'
 import {
     addOrderItems,
     getOrderById,
-    updateOrderToPaid
+    updateOrderToPaid,
+    getMyOrders
 
 } from '../controllers/ordersController.js'
 
@@ -19,7 +20,7 @@ import {
 
 router.route('/').post(protect,addOrderItems)
 
-
+router.route('/myorders').get(protect,getMyOrders)
 router.route('/:id').get(protect,getOrderById)
 router.route('/:id/pay').put(protect,updateOrderToPaid)
 

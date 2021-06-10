@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // Node packages
 import axios from 'axios'
 // Components
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import {PayPalButton} from 'react-paypal-button-v2'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
