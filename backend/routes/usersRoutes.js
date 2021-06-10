@@ -3,12 +3,13 @@ import  express from 'express'
 // Initialize express Router
 const router = express.Router()
 // Actions
-import { protect } from '../middleware/authMiddleware.js'
+import { protect, isAdmin } from '../middleware/authMiddleware.js'
 import {
     authUser,
     getUserProfile,
     registerUser,
-    updateUserProfile
+    updateUserProfile,
+    getUsers
 } from '../controllers/usersController.js'
 
 
@@ -19,7 +20,7 @@ router.post('/login',authUser)
 
 router.route('/profile').get(protect,getUserProfile).put(protect,updateUserProfile)
 
-router.route('/').post(registerUser)
+router.route('/').post(registerUser).get(protect,isAdmin,getUsers)
 
 
 
