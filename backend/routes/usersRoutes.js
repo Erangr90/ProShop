@@ -10,7 +10,9 @@ import {
     registerUser,
     updateUserProfile,
     getUsers,
-    deleteUser
+    deleteUser,
+    getUserById,
+    updateUser
 } from '../controllers/usersController.js'
 
 
@@ -23,7 +25,7 @@ router.route('/profile').get(protect,getUserProfile).put(protect,updateUserProfi
 
 router.route('/').post(registerUser).get(protect,isAdmin,getUsers)
 
-router.route('/:id').delete(protect,isAdmin,deleteUser)
+router.route('/:id').delete(protect,isAdmin,deleteUser).get(protect,isAdmin,getUserById).put(protect,isAdmin,updateUser)
 
 
 
