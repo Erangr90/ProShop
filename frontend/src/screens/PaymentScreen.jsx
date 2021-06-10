@@ -10,17 +10,22 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { savePaymentMethod } from '../actions/cartActions'
 
 const PaymentScreen = ({ history }) => {
+
+  // Data from the state
   const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
 
+  // Check if there is shippingAddress
   if (!shippingAddress.address) {
     history.push('/shipping')
   }
 
+  // Variables
+  const dispatch = useDispatch()
   const [paymentMethod, setPaymentMethod] = useState('PayPal')
 
-  const dispatch = useDispatch()
 
+  // Handlers
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(savePaymentMethod(paymentMethod))

@@ -15,27 +15,29 @@ import { register } from '../actions/usersActions'
 
 const RegisterScreen = ({location,history}) => {
 
+        // Data from the state
+        const userRegister = useSelector(state => state.userRegister)
+        const {loading, error, userInfo} = userRegister
+
+        // Variables
+        const dispatch = useDispatch()
         const [email,setEmail] = useState('')
         const [password,setPassword] = useState('')
         const [confirmPassword,setConfirmPassword] = useState('')
         const [name, setName] = useState('')
         const [message, setMessage] = useState(null)
-
-        const userRegister = useSelector(state => state.userRegister)
-        const {loading, error, userInfo} = userRegister
-
         const redirect = location.search ? location.search.split('=')[1] : '/'
 
 
-
+        // Listen to data variables
         useEffect(() => {
             if(userInfo){
                 history.push(redirect)
             }
         }, [history, redirect, userInfo])
 
-        const dispatch = useDispatch()
 
+        // Handlers
         const submitHandler = (e)=>{
             e.preventDefault()
             if(password !== confirmPassword){

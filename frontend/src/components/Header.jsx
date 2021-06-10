@@ -9,11 +9,17 @@ import { logout } from '../actions/usersActions'
 
 const Header = () => {
 
+
+
+    // Data from the state
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
 
+    // Variables
     const dispatch = useDispatch()
 
+
+    // Handlers
     const logoutHandler =()=>{
 
         dispatch(logout())

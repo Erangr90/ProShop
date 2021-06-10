@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react'
 // Redux packages
 import { useDispatch, useSelector } from 'react-redux'
-// Node packages
 // Components
 import { Table, Form, Button, Row, Col } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -15,14 +14,8 @@ import { getMyOrders } from '../actions/ordersActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/usersConstants'
 
 const ProfileScreen = ({ location, history }) => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [message, setMessage] = useState(null)
 
-  const dispatch = useDispatch()
-
+  // Data from the state
   const userProfile = useSelector((state) => state.userProfile)
   const { loading, error, user } = userProfile
 
@@ -35,6 +28,18 @@ const ProfileScreen = ({ location, history }) => {
   const myOrders = useSelector((state) => state.myOrders)
   const { loading: loadingOrders, error: errorOrders, orders } = myOrders
 
+
+  // Variables
+  const dispatch = useDispatch()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [message, setMessage] = useState(null)
+
+
+
+  // Listen to data variables
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
@@ -50,6 +55,8 @@ const ProfileScreen = ({ location, history }) => {
     }
   }, [dispatch, history, userInfo, user, success])
 
+
+  // Handlers
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {

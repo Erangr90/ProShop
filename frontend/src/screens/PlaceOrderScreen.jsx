@@ -15,22 +15,29 @@ import { USER_DETAILS_RESET } from '../constants/usersConstants'
 
 const PlaceOrderScreen = ({ history }) => {
 
-  const dispatch = useDispatch()
+  // Data from the state
+  const orderCreate = useSelector((state) => state.orderCreate)
+  const { order, success, error } = orderCreate
 
+  // Variables
+  const dispatch = useDispatch()
   const cart = useSelector((state) => state.cart)
 
+  // Check if there is shippingAddress & paymentMethod and redirect
   if (!cart.shippingAddress.address) {
     history.push('/shipping')
   } else if (!cart.paymentMethod) {
     history.push('/payment')
   }
+
+
   // Calculate prices
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
 
   cart.itemsPrice = addDecimals(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
   cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
@@ -40,9 +47,9 @@ const PlaceOrderScreen = ({ history }) => {
     Number(cart.taxPrice)
   ).toFixed(2)
 
-  const orderCreate = useSelector((state) => state.orderCreate)
-  const { order, success, error } = orderCreate
 
+
+  // Listen to data variables
   useEffect(() => {
     if (success) {
       history.push('/order/'+order._id)
@@ -52,6 +59,7 @@ const PlaceOrderScreen = ({ history }) => {
     // eslint-disable-next-line
   }, [history, success])
 
+  // Handlers
   const placeOrderHandler = () => {
     dispatch(
       createOrder({

@@ -12,11 +12,16 @@ import { ProductsList } from '../actions/productsActions'
 
 const HomeScreen = () => {
 
-    const dispatch = useDispatch()
 
+
+    // Data from the state
     const productsList = useSelector(state => state.productsList)
     const {loading, products,error} = productsList
 
+    // Variables
+    const dispatch = useDispatch()
+
+    // Listen to data variables
     useEffect(()=>{
 
         dispatch(ProductsList())

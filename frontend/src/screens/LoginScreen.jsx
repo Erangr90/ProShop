@@ -15,22 +15,29 @@ import { login } from '../actions/usersActions'
 
 const LoginScreen = ({location,history}) => {
 
-        const [email,setEmail] = useState('')
-        const [password,setPassword] = useState('')
 
+
+
+        // Data from the state
         const userLogin = useSelector(state => state.userLogin)
         const {loading, error, userInfo} = userLogin
 
+        // Variables
+        const dispatch = useDispatch()
+        const [email,setEmail] = useState('')
+        const [password,setPassword] = useState('')
         const redirect = location.search ? location.search.split('=')[1] : '/'
 
+
+        // Listen to data variables
         useEffect(() => {
             if(userInfo){
                 history.push(redirect)
             }
         }, [history, redirect, userInfo])
 
-        const dispatch = useDispatch()
 
+        // Handlers
         const submitHandler = (e)=>{
             e.preventDefault()
             dispatch(login(email,password))

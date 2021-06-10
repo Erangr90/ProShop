@@ -12,8 +12,8 @@ import { getAllUsers, deleteUser } from '../actions/usersActions'
 
 const UsersListScreen = ({history}) => {
 
-    const dispatch = useDispatch()
 
+    // Data from the state
     const allUsers = useSelector(state => state.allUsers)
     const {loading,error,users} = allUsers
 
@@ -23,6 +23,12 @@ const UsersListScreen = ({history}) => {
     const userDelete = useSelector(state => state.userDelete)
     const {success:successDelete} = userDelete
 
+
+    // Variables
+    const dispatch = useDispatch()
+
+
+    // Listen to data variables
     useEffect(() => {
 
         if(userInfo && userInfo.isAdmin){
@@ -38,6 +44,9 @@ const UsersListScreen = ({history}) => {
 
     }, [dispatch, history, userInfo,successDelete])
 
+
+
+    // Handlers
     const deleteHandler = (id)=>{
 
         if(window.confirm('Are you sure?')){

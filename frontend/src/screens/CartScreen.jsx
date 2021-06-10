@@ -1,29 +1,38 @@
+// React packages
 import React,{useEffect} from 'react'
 import {Link} from 'react-router-dom'
+// Redux packages
 import { useDispatch,useSelector } from 'react-redux'
+// Components
 import {Row, Col, ListGroup, Image,Form,Button,Card} from 'react-bootstrap'
 import Message from '../components/Message'
+// Actions
 import { addToCart, removeFormCart } from '../actions/cartActions'
 
 
 const CartScreen = ({match, location, history }) => {
 
-    const productId = match.params.id
 
-    const qty = location.search ? Number(location.search.split('=')[1]) : 1
-
-    const dispatch = useDispatch()
-
+    // Data from the state
     const cart = useSelector(state => state.cart)
     const {cartItems} = cart
 
 
+    // Variables
+    const dispatch = useDispatch()
+    const productId = match.params.id
+    const qty = location.search ? Number(location.search.split('=')[1]) : 1
+
+
+
+    // Listen to data variables
     useEffect(() => {
         if(productId){
             dispatch(addToCart(productId,qty))
         }
     }, [dispatch, productId, qty])
 
+    // Handlers
     const removeFormCartHandler = (id)=>{
         dispatch(removeFormCart(id))
     }

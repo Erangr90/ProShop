@@ -17,19 +17,24 @@ import { ORDER_PAY_RESET } from '../constants/ordersConstants'
 
 const OrderScreen = ({ match }) => {
 
+
+  // Data from the state
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
   const orderPay = useSelector((state) => state.orderPay)
   const { success:successPay, loading:loadingPay } = orderPay
 
+  // Variables
+  const dispatch = useDispatch()
+  const [sdkReady, setSdkReady] = useState(false)
   const orderId = match.params.id
 
-  const [sdkReady, setSdkReady] = useState(false)
 
+  // Calculate prices
   if(!loading){
 
-    // Calculate prices
+
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
@@ -42,15 +47,12 @@ const OrderScreen = ({ match }) => {
   order.taxPrice = addDecimals(order.taxPrice )
 
   order.totalPrice = addDecimals(order.totalPrice )
-
-
   }
 
-  const dispatch = useDispatch()
 
 
 
-
+  // Listen to data variables
   useEffect(() => {
     const addPaypalScript = async () =>{
       const {data: clientId} = await axios.get('/api/config/paypal')
@@ -76,6 +78,8 @@ const OrderScreen = ({ match }) => {
     }
 }, [dispatch, order, orderId, successPay])
 
+
+  // Handlers
   const successHandler = (paymentResult)=>{
 
     console.log(paymentResult)

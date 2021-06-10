@@ -12,18 +12,13 @@ import Loader from '../components/Loader'
 import { getProduct } from '../actions/productsActions'
 
 const ProductScreen = ({history ,match}) => {
-
-    const [qty,setQty] = useState(1)
-
-    const dispatch = useDispatch()
-
+    // Data from the state
     const productDetails = useSelector(state => state.productDetails)
-
     const {loading,error,product} = productDetails
-
-
-
-
+    // Variables
+    const dispatch = useDispatch()
+    const [qty,setQty] = useState(1)
+    // Listen to data variables
     useEffect(()=>{
 
         dispatch(getProduct(match.params.id))
@@ -31,7 +26,7 @@ const ProductScreen = ({history ,match}) => {
 
 
     },[dispatch, match.params.id])
-
+    // Handlers
     const addToCartHandler = ()=> {
         history.push('/cart/' + match.params.id +'?qty=' + qty)
     }
