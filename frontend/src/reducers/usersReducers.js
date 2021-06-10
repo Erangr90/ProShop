@@ -17,7 +17,10 @@ import {
     USER_UPDATE_PROFILE_RESET,
     USER_LIST_REQUEST,
     USER_LIST_SUCCESSES,
-    USER_LIST_FAIL
+    USER_LIST_FAIL,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESSES,
+    USER_DELETE_FAIL
 } from '../constants/usersConstants'
 
 
@@ -101,6 +104,22 @@ export const getAllUsersReducer = (state= {users:[]}, action)=>{
         case USER_LIST_SUCCESSES:
             return {loading:false, users:action.payload}
         case USER_LIST_FAIL:
+            return {loading:false, error:action.payload}
+        default:
+            return state
+    }
+
+}
+
+// Delete a user
+export const userDeleteReducer = (state= {}, action)=>{
+
+    switch (action.type) {
+        case USER_DELETE_REQUEST:
+            return {...state, loading:true}
+        case USER_DELETE_SUCCESSES:
+            return {loading:false, success:true}
+        case USER_DELETE_FAIL:
             return {loading:false, error:action.payload}
         default:
             return state

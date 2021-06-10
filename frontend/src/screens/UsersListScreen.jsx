@@ -8,7 +8,7 @@ import { Table, Button } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 // Actions
-import { getAllUsers } from '../actions/usersActions'
+import { getAllUsers, deleteUser } from '../actions/usersActions'
 
 const UsersListScreen = ({history}) => {
 
@@ -19,6 +19,9 @@ const UsersListScreen = ({history}) => {
 
     const userLogin = useSelector(state => state.userLogin)
     const{userInfo} = userLogin
+
+    const userDelete = useSelector(state => state.userDelete)
+    const {success:successDelete} = userDelete
 
     useEffect(() => {
 
@@ -33,9 +36,17 @@ const UsersListScreen = ({history}) => {
 
         }
 
-    }, [dispatch, history, userInfo])
+    }, [dispatch, history, userInfo,successDelete])
 
     const deleteHandler = (id)=>{
+
+        if(window.confirm('Are you sure?')){
+
+            dispatch(deleteUser(id))
+
+        }
+
+
 
     }
 
