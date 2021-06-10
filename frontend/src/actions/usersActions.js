@@ -20,12 +20,17 @@ import {
     USER_LIST_FAIL,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESSES,
-    USER_DELETE_FAIL
+    USER_DELETE_FAIL,
+    USER_UPDATE_REQUEST,
+    USER_UPDATE_SUCCESSES,
+    USER_UPDATE_FAIL
 } from '../constants/usersConstants'
 
 import { ORDER_MY_LIST_RESET } from '../constants/ordersConstants'
 // Node packages
 import axios from 'axios'
+
+
 
 
 // User login
@@ -283,5 +288,46 @@ export const deleteUser = (id)=> async(dispatch,getState)=> {
 
     }
 
+
+}
+
+// Update a user
+export const updateUser = (user)=> async(dispatch,getState)=> {
+    try {
+
+
+        dispatch({type: USER_UPDATE_REQUEST })
+
+        const {userLogin:{userInfo}} = getState()
+
+        // Make a json request & get the token
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer '+userInfo.token
+            }
+        }
+        // (url,data,config)
+        const {data}  = await axios.put('/api/users/'+user._id,user,config)
+
+        dispatch({
+            type: USER_UPDATE_SUCCESSES,
+        })
+
+        dispatch({
+            type: USER_UPDATE_PROFILE_SUCCESSES,
+            payload: data
+        })
+
+
+
+    } catch (error) {
+
+        dispatch({
+            type: USER_UPDATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
 
 }

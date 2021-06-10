@@ -20,7 +20,11 @@ import {
     USER_LIST_FAIL,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESSES,
-    USER_DELETE_FAIL
+    USER_DELETE_FAIL,
+    USER_UPDATE_REQUEST,
+    USER_UPDATE_SUCCESSES,
+    USER_UPDATE_FAIL,
+    USER_UPDATE_RESET
 } from '../constants/usersConstants'
 
 
@@ -77,7 +81,7 @@ export const userProfileReducer = (state= {user:{}}, action)=>{
 
 }
 
-// Update user profile
+// Update login user profile
 export const updateProfileReducer = (state= {}, action)=>{
 
     switch (action.type) {
@@ -121,6 +125,24 @@ export const userDeleteReducer = (state= {}, action)=>{
             return {loading:false, success:true}
         case USER_DELETE_FAIL:
             return {loading:false, error:action.payload}
+        default:
+            return state
+    }
+
+}
+
+// Update user admin
+export const userUpdateReducer = (state= {user:{}}, action)=>{
+
+    switch (action.type) {
+        case USER_UPDATE_REQUEST:
+            return { loading:true , success:false}
+        case USER_UPDATE_SUCCESSES:
+            return {loading:false, success:true}
+        case USER_UPDATE_FAIL:
+            return {loading:false, error:action.payload , success:false}
+        case USER_UPDATE_RESET:
+            return {user:{}}
         default:
             return state
     }
