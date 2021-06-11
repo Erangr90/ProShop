@@ -25,7 +25,8 @@ import {
     orderCreateReducer,
     getOrderDetailsReducer,
     orderPayReducer,
-    getMyOrdersReducer} from './reducers/ordersReducers'
+    getMyOrdersReducer,
+    OrdersListReducer} from './reducers/ordersReducers'
 
 
 
@@ -48,6 +49,7 @@ const reducer = combineReducers({
     orderDetails:getOrderDetailsReducer,
     orderPay:orderPayReducer,
     myOrders:getMyOrdersReducer,
+    ordersList:OrdersListReducer,
 })
 
 // LocalStorage

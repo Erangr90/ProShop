@@ -11,7 +11,10 @@ import {
   ORDER_PAY_FAIL,
   ORDER_MY_LIST_REQUEST,
   ORDER_MY_LIST_SUCCESS,
-  ORDER_MY_LIST_FAIL
+  ORDER_MY_LIST_FAIL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL
 } from '../constants/ordersConstants'
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
@@ -168,6 +171,42 @@ export const getMyOrders = () => async (dispatch, getState) => {
         : error.message
     dispatch({
       type: ORDER_MY_LIST_FAIL,
+      payload: message,
+    })
+  }
+}
+
+// Get all orders
+export const getOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    // Make a json request & get the token
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer '+userInfo.token,
+      },
+    }
+
+    const { data } = await axios.get('/api/orders', config)
+
+    dispatch({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    dispatch({
+      type: ORDER_LIST_FAIL,
       payload: message,
     })
   }
