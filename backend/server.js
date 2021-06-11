@@ -2,6 +2,7 @@
 import  express from 'express'
 import  dotenv from 'dotenv'
 import colors from 'colors'
+import path from 'path'
 // Middlewares
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 // DB connection file
@@ -10,21 +11,23 @@ import connectDB from './config/db.js'
 import productsRoutes from './routes/productsRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 import ordersRoutes from './routes/orderRoutes.js'
+import uploadsRoutes from './routes/uploadsRoutes.js'
 // Initialize express server
 const app = express()
 // Use Json on req body
 app.use(express.json())
+// Static folders
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads') ))
 // Initialize environment variables
 dotenv.config()
-// Data
-import  products from './data/products.js'
 // Initialize DB connection
 connectDB()
 // Routes
 app.use('/api/products',productsRoutes)
 app.use('/api/users',usersRoutes)
 app.use('/api/orders',ordersRoutes)
-
+app.use('/api/uploads',uploadsRoutes)
 
 app.get('/',(req,res)=>{
     res.send('API is running')
