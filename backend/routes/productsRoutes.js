@@ -2,14 +2,22 @@
 import  express from 'express'
 // Initialize express Router
 const router = express.Router()
-import { getProducts, getProductById} from '../controllers/productsController.js'
+// Actions
+import { protect, isAdmin } from '../middleware/authMiddleware.js'
+
+import { getProducts,
+        getProductById,
+        deleteProduct,
+        updateProduct} from '../controllers/productsController.js'
 
 
 
 // Routes
-router.route('/:id').get(getProductById)
+
 
 router.route('/').get(getProducts)
+
+router.route('/:id').get(getProductById).delete(protect,isAdmin,deleteProduct).put(protect,isAdmin,updateProduct)
 
 
 

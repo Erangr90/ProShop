@@ -8,7 +8,7 @@ import { Table, Button,Row,Col } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 // Actions
-import { ProductsList } from '../actions/productsActions'
+import { ProductsList, deleteProduct } from '../actions/productsActions'
 
 const ProductsListScreen = ({history, match}) => {
 
@@ -19,6 +19,9 @@ const ProductsListScreen = ({history, match}) => {
 
     const userLogin = useSelector(state => state.userLogin)
     const{userInfo} = userLogin
+
+    const productDelete = useSelector(state => state.productDelete)
+    const {loading:loadingDel,error:errorDel,success:successDel} = productDelete
 
 
 
@@ -36,18 +39,18 @@ const ProductsListScreen = ({history, match}) => {
         }
 
 
-    }, [dispatch, history, userInfo])
+    }, [dispatch, history, userInfo,successDel])
 
 
 
     // Handlers
     const deleteHandler = (id)=>{
 
-        // if(window.confirm('Are you sure?')){
+        if(window.confirm('Are you sure?')){
 
-        //     dispatch(deleteUser(id))
+            dispatch(deleteProduct(id))
 
-        // }
+        }
 
 
 
@@ -64,6 +67,8 @@ const ProductsListScreen = ({history, match}) => {
                 <Button className='my-3' onClick={createProductHandler}><i className='fas fa-plus'></i>Create Product</Button>
             </Col>
         </Row>
+        {loadingDel && <Loader/>}
+        {errorDel && <Message variant='danger'>{errorDel}</Message>}
         {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
             <Table striped bordered hover responsive className='table-sm'>
                 <thead>
