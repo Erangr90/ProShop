@@ -9,9 +9,9 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 // Actions
-import { getProduct } from '../actions/productsActions'
+import { getProduct,updateProduct } from '../actions/productsActions'
 // Constants
-import {  } from '../constants/productsConstants'
+import {  PRODUCT_UPDATE_RESET } from '../constants/productsConstants'
 
 
 
@@ -21,6 +21,8 @@ const ProductEditScreen = ({match,history}) => {
         // Data from the state
         const productDetails = useSelector(state => state.productDetails )
         const {loading,error,product} =  productDetails
+        const productUpdate = useSelector(state => state.productUpdate )
+        const {loading:loadingUpdate,error:errorUpdate,success:successUpdate} =  productUpdate
 
         // Variables
         const dispatch = useDispatch()
@@ -43,28 +45,43 @@ const ProductEditScreen = ({match,history}) => {
         // Listen to data variables
         useEffect(() => {
 
+            if(successUpdate){
+                dispatch({type:PRODUCT_UPDATE_RESET})
+                dispatch(getProduct(productId))
+                history.push('/admin/products')
+            }else{
 
-            if(!product || !product._id || product._id !== productId){
-            dispatch(getProduct(productId))
-            }else {
-            setName(product.name)
-            setPrice(product.price)
-            setImage(product.image)
-            setBrand(product.brand)
-            setCategory(product.category)
-            setIsCountInStock(product.countInStock)
-            setDescription(product.description)
+                if(!product || !product._id || product._id !== productId){
+                    dispatch(getProduct(productId))
+                }else {
+                    setName(product.name)
+                    setPrice(product.price)
+                    setImage(product.image)
+                    setBrand(product.brand)
+                    setCategory(product.category)
+                    setIsCountInStock(product.countInStock)
+                    setDescription(product.description)
+                }
+
             }
 
 
-        }, [dispatch, product, productId])
+        }, [dispatch, history, product, productId, successUpdate])
 
 
         // Handlers
         const submitHandler = (e)=>{
             e.preventDefault()
-
-
+            dispatch(updateProduct({
+                _id:productId,
+                name,
+                price,
+                image,
+                brand,
+                category,
+                countInStock,
+                description
+            }))
         }
 
     return (
@@ -74,6 +91,8 @@ const ProductEditScreen = ({match,history}) => {
             <FormContainer>
 
                 <h1>Edit Product</h1>
+                {loadingUpdate && <Loader/>}
+                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
                 {loading ?  <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
 
                 <Form onSubmit={submitHandler}>

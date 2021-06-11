@@ -3,7 +3,10 @@ import { PRODUCT_CREATE_FAIL, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESSES, 
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESSES,
     PRODUCT_REQUEST,
-    PRODUCT_SUCCESSES
+    PRODUCT_SUCCESSES,
+    PRODUCT_UPDATE_FAIL,
+    PRODUCT_UPDATE_REQUEST,
+    PRODUCT_UPDATE_SUCCESSES
 } from '../constants/productsConstants'
 // Node packages
 import axios from 'axios'
@@ -124,6 +127,39 @@ export const createProduct = ()=> async(dispatch,getState)=> {
 
         dispatch({
             type: PRODUCT_CREATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
+
+}
+
+// Update product
+export const updateProduct = (product)=> async(dispatch,getState)=> {
+    try {
+        dispatch({type: PRODUCT_UPDATE_REQUEST })
+
+        const {userLogin:{userInfo}} = getState()
+
+        // Make a json request
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer '+userInfo.token
+            }
+        }
+        // (url,data,config)
+       await axios.put('/api/products/'+product._id,product,config)
+
+        dispatch({
+            type: PRODUCT_UPDATE_SUCCESSES,
+        })
+
+
+    } catch (error) {
+
+        dispatch({
+            type: PRODUCT_UPDATE_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
 
