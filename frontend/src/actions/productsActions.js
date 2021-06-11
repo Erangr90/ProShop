@@ -1,5 +1,5 @@
 // Constants
-import { PRODUCT_DELETE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESSES, PRODUCT_FAIL, PRODUCT_LIST_FAIL,
+import { PRODUCT_CREATE_FAIL, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESSES, PRODUCT_DELETE_FAIL, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_SUCCESSES, PRODUCT_FAIL, PRODUCT_LIST_FAIL,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESSES,
     PRODUCT_REQUEST,
@@ -94,5 +94,39 @@ export const deleteProduct = (id)=> async(dispatch,getState)=> {
 
     }
 
+
+}
+
+// Create product
+export const createProduct = ()=> async(dispatch,getState)=> {
+    try {
+        dispatch({type: PRODUCT_CREATE_REQUEST })
+
+        const {userLogin:{userInfo}} = getState()
+
+        // Make a json request
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer '+userInfo.token
+            }
+        }
+        // (url,data,config)
+       const {data} = await axios.post('/api/products',{},config)
+
+        dispatch({
+            type: PRODUCT_CREATE_SUCCESSES,
+            payload: data
+        })
+
+
+    } catch (error) {
+
+        dispatch({
+            type: PRODUCT_CREATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
 
 }

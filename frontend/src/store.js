@@ -6,7 +6,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import {
     productListReducer,
     getProductReducer,
-    productDeleteReducer} from './reducers/productReducers'
+    productDeleteReducer,
+    productCreateReducer} from './reducers/productReducers'
 // Cart Reducers
 import { cartReducer} from './reducers/cartReducers'
 // User Reducers
@@ -32,6 +33,7 @@ const reducer = combineReducers({
     productsList: productListReducer,
     productDetails: getProductReducer,
     productDelete:productDeleteReducer,
+    productCreate:productCreateReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister:userRegisterReducer,

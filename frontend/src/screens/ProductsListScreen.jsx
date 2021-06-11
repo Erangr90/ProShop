@@ -8,7 +8,8 @@ import { Table, Button,Row,Col } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 // Actions
-import { ProductsList, deleteProduct } from '../actions/productsActions'
+import { ProductsList, deleteProduct, createProduct } from '../actions/productsActions'
+import { PRODUCT_CREATE_RESET } from '../constants/productsConstants'
 
 const ProductsListScreen = ({history, match}) => {
 
@@ -23,6 +24,11 @@ const ProductsListScreen = ({history, match}) => {
     const productDelete = useSelector(state => state.productDelete)
     const {loading:loadingDel,error:errorDel,success:successDel} = productDelete
 
+    const productCreate = useSelector(state => state.productCreate)
+    const {loading:loadingCreate,error:errorCreate,success:successCreate, product:createdProduct} = productCreate
+
+    // productCreate
+
 
 
 
@@ -32,14 +38,16 @@ const ProductsListScreen = ({history, match}) => {
 
     // Listen to data variables
     useEffect(() => {
-        if(userInfo && userInfo.isAdmin){
-            dispatch(ProductsList())
-        }else{
+        dispatch({type:PRODUCT_CREATE_RESET})
+        if(!userInfo.isAdmin){
             history.push('/login')
         }
-
-
-    }, [dispatch, history, userInfo,successDel])
+        if(successCreate){
+            history.push('/admin/product/'+ createdProduct._id+'/edit')
+        }else{
+            dispatch(ProductsList())
+            }
+    }, [dispatch, history, userInfo,successDel,successCreate,createdProduct])
 
 
 
@@ -57,6 +65,8 @@ const ProductsListScreen = ({history, match}) => {
     }
     const createProductHandler = ()=>{
 
+        dispatch(createProduct())
+
     }
 
     return (
@@ -69,6 +79,8 @@ const ProductsListScreen = ({history, match}) => {
         </Row>
         {loadingDel && <Loader/>}
         {errorDel && <Message variant='danger'>{errorDel}</Message>}
+        {loadingCreate && <Loader/>}
+        {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
         {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
             <Table striped bordered hover responsive className='table-sm'>
                 <thead>
