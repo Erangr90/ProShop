@@ -28,7 +28,7 @@ export const getProductReducer = (state= {product:{}}, action)=>{
 
     switch (action.type) {
         case PRODUCT_REQUEST:
-            return {loading:true, product:{}}
+            return {loading:true}
         case PRODUCT_SUCCESSES:
             return {loading:false, product:action.payload}
         case PRODUCT_FAIL:
