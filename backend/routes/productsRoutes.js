@@ -8,14 +8,15 @@ import { protect, isAdmin } from '../middleware/authMiddleware.js'
 import { getProducts,
         getProductById,
         deleteProduct,
-        updateProduct} from '../controllers/productsController.js'
+        updateProduct,
+        createProduct} from '../controllers/productsController.js'
 
 
 
 // Routes
 
 
-router.route('/').get(getProducts)
+router.route('/').get(getProducts).post(protect,isAdmin,createProduct)
 
 router.route('/:id').get(getProductById).delete(protect,isAdmin,deleteProduct).put(protect,isAdmin,updateProduct)
 
