@@ -9,7 +9,8 @@ import { getProducts,
         getProductById,
         deleteProduct,
         updateProduct,
-        createProduct} from '../controllers/productsController.js'
+        createProduct,
+        createReview} from '../controllers/productsController.js'
 
 
 
@@ -19,6 +20,7 @@ import { getProducts,
 router.route('/').get(getProducts).post(protect,isAdmin,createProduct)
 
 router.route('/:id').get(getProductById).delete(protect,isAdmin,deleteProduct).put(protect,isAdmin,updateProduct)
+router.route('/:id/reviews').post(protect,createReview)
 
 
 

@@ -3,6 +3,7 @@ import  express from 'express'
 import  dotenv from 'dotenv'
 import colors from 'colors'
 import path from 'path'
+import morgan from 'morgan'
 // Middlewares
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 // DB connection file
@@ -23,6 +24,10 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads') ))
 dotenv.config()
 // Initialize DB connection
 connectDB()
+// Follow the routes hits
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'))
+}
 // Routes
 app.use('/api/products',productsRoutes)
 app.use('/api/users',usersRoutes)
