@@ -3,6 +3,9 @@ import { PRODUCT_CREATE_FAIL, PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESSES, 
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESSES,
     PRODUCT_REQUEST,
+    PRODUCT_REVIEW_FAIL,
+    PRODUCT_REVIEW_REQUEST,
+    PRODUCT_REVIEW_SUCCESSES,
     PRODUCT_SUCCESSES,
     PRODUCT_UPDATE_FAIL,
     PRODUCT_UPDATE_REQUEST,
@@ -160,6 +163,39 @@ export const updateProduct = (product)=> async(dispatch,getState)=> {
 
         dispatch({
             type: PRODUCT_UPDATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+
+    }
+
+}
+
+// Create review
+export const reviewProduct = (productId,review)=> async(dispatch,getState)=> {
+    try {
+        dispatch({type: PRODUCT_REVIEW_REQUEST })
+
+        const {userLogin:{userInfo}} = getState()
+
+        // Make a json request
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer '+userInfo.token
+            }
+        }
+        // (url,data,config)
+       await axios.post('/api/products/'+productId+'/reviews',review,config)
+
+        dispatch({
+            type: PRODUCT_REVIEW_SUCCESSES,
+        })
+
+
+    } catch (error) {
+
+        dispatch({
+            type: PRODUCT_REVIEW_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
 
