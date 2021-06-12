@@ -10,7 +10,9 @@ import Loader from '../components/Loader'
 // Actions
 import { ProductsList } from '../actions/productsActions'
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+
+
 
 
 
@@ -21,13 +23,15 @@ const HomeScreen = () => {
     // Variables
     const dispatch = useDispatch()
 
+    const keyword = match.params.keyword
+
     // Listen to data variables
     useEffect(()=>{
 
-        dispatch(ProductsList())
+        dispatch(ProductsList(keyword))
 
 
-    },[dispatch] )
+    },[dispatch, keyword] )
 
     return (
         <>

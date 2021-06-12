@@ -18,11 +18,11 @@ import axios from 'axios'
 
 
 // Get list of all products
-export const ProductsList = ()=> async(dispatch)=> {
+export const ProductsList = (keyword='')=> async(dispatch)=> {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST })
 
-        const {data}  = await axios.get('/api/products')
+        const {data}  = await axios.get('/api/products?keyword='+keyword)
 
         dispatch({
             type: PRODUCT_LIST_SUCCESSES,
