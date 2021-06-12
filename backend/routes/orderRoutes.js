@@ -9,7 +9,8 @@ import {
     getOrderById,
     updateOrderToPaid,
     getMyOrders,
-    getOrders
+    getOrders,
+    updateOrderToDelivered
 
 } from '../controllers/ordersController.js'
 
@@ -23,6 +24,7 @@ router.route('/').post(protect,addOrderItems).get(protect,isAdmin,getOrders)
 router.route('/myorders').get(protect,getMyOrders)
 router.route('/:id').get(protect,getOrderById)
 router.route('/:id/pay').put(protect,updateOrderToPaid)
+router.route('/:id/delivered').put(protect,isAdmin,updateOrderToDelivered)
 
 
 

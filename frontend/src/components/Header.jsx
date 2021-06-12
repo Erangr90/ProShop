@@ -7,7 +7,7 @@ import {Navbar,Nav, Container, NavDropdown} from 'react-bootstrap'
 // Actions
 import { logout } from '../actions/usersActions'
 
-const Header = () => {
+const Header = ({history}) => {
 
 
 
@@ -23,6 +23,7 @@ const Header = () => {
     const logoutHandler =()=>{
 
         dispatch(logout())
+
 
     }
 
