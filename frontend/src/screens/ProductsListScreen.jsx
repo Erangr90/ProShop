@@ -4,9 +4,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // Components
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button,Row,Col } from 'react-bootstrap'
+import { Table, Button,Row,Col, Pagination } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Paginate from '../components/Paginate'
 // Actions
 import { ProductsList, deleteProduct, createProduct } from '../actions/productsActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productsConstants'
@@ -16,7 +17,7 @@ const ProductsListScreen = ({history, match}) => {
 
     // Data from the state
     const productsList = useSelector(state => state.productsList)
-    const {loading,error,products} = productsList
+    const {loading,error,products,page,pages} = productsList
 
     const userLogin = useSelector(state => state.userLogin)
     const{userInfo} = userLogin
@@ -35,6 +36,9 @@ const ProductsListScreen = ({history, match}) => {
     // Variables
     const dispatch = useDispatch()
 
+    const keyword = match.params.keyword
+    const pageNumber = match.params.pageNumber || 1
+
 
     // Listen to data variables
     useEffect(() => {
@@ -45,9 +49,9 @@ const ProductsListScreen = ({history, match}) => {
         if(successCreate){
             history.push('/admin/product/'+ createdProduct._id+'/edit')
         }else{
-            dispatch(ProductsList())
+            dispatch(ProductsList(keyword,pageNumber))
             }
-    }, [dispatch, history, userInfo,successDel,successCreate,createdProduct])
+    }, [dispatch, history, userInfo, successDel, successCreate, createdProduct, keyword, pageNumber])
 
 
 
@@ -81,7 +85,7 @@ const ProductsListScreen = ({history, match}) => {
         {errorDel && <Message variant='danger'>{errorDel}</Message>}
         {loadingCreate && <Loader/>}
         {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
-        {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (
+        {loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : (<>
             <Table striped bordered hover responsive className='table-sm'>
                 <thead>
                     <tr>
@@ -116,7 +120,8 @@ const ProductsListScreen = ({history, match}) => {
                     ))}
                 </tbody>
             </Table>
-        )}
+            <Paginate page={page} pages={pages} isAdmin={true}/>
+        </>)}
 
         </>
     )
