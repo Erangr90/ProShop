@@ -1,178 +1,141 @@
-// Node packages
-import asyncHandler from 'express-async-handler'
-// Models
-import Order from '../models/orderModel.js'
+import asyncHandler from 'express-async-handler';
+import Order from '../models/orderModel.js';
 
 // @dec:    Create new order
 // @route:  POST /api/orders
 // @access: Privet
-const addOrderItems = asyncHandler( async(req,res) => {
+const addOrderItems = asyncHandler(async (req, res) => {
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body;
 
-    const { orderItems,shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body
+  if (orderItems && orderItems.length === 0) {
+    res.status(400);
+    throw new Error('No order items');
+    return;
+  } else {
+    const order = new Order({
+      orderItems,
+      user: req.user._id,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    });
 
-    if(orderItems && orderItems.length === 0 ){
-        res.status(400)
-        throw new Error('No order items')
-        return
-    }
-    else {
-        const order = new Order({
-            orderItems,
-            user:req.user._id,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice
-
-        })
-
-        const createdOrder = await order.save()
-        res.status(201).json(createdOrder)
-        }
-
-})
-
+    const createdOrder = await order.save();
+    res.status(201).json(createdOrder);
+  }
+});
 
 // @dec:    Get order by id
 // @route:  GET /api/orders/:id
 // @access: Privet
-const getOrderById = asyncHandler( async(req,res) => {
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email -_id'
+  );
 
-    const order = await Order.findById(req.params.id).populate('user','name email -_id')
-
-    if(order){
-        res.json(order)
-    }
-    else {
-        res.status(404)
-        throw new Error('Order not found')
-        }
-
-})
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
 
 // @dec:    Update order to paid
 // @route:  PUT /api/orders/:id/pay
 // @access: Privet
-const updateOrderToPaid = asyncHandler( async(req,res) => {
+const updateOrderToPaid = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
 
-    const order = await Order.findById(req.params.id)
-
-    if(order){
-
-    order.isPaid = true
-    order.paidAt = Date.now()
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
     order.paymentResult = {
-        id:req.body.id,
-        status:req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.email_address
-    }
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.email_address,
+    };
 
     try {
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
     } catch (error) {
-
-        throw error
+      throw error;
     }
-
-    }else{
-        res.status(404)
-        throw new Error('Order not found')
-
-    }
-
-
-
-})
-
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
 
 // @dec:    Get login user orders
 // @route:  GET /api/orders/myorders
 // @access: Privet
-const getMyOrders = asyncHandler( async(req,res) => {
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
 
-    const orders = await Order.find({user: req.user._id})
-
-    if(orders){
-
-        res.json(orders)
-
-
-
-    }else{
-        res.status(404)
-        throw new Error('Orders not found')
-
-    }
-
-
-
-})
+  if (orders) {
+    res.json(orders);
+  } else {
+    res.status(404);
+    throw new Error('Orders not found');
+  }
+});
 
 // @dec:    Get all orders
 // @route:  GET /api/orders
 // @access: Privet/admin
-const getOrders = asyncHandler( async(req,res) => {
+const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate('user', 'id name');
 
-    const orders = await Order.find({}).populate('user', 'id name')
-
-    if(orders){
-
-        res.json(orders)
-
-
-
-    }else{
-        res.status(404)
-        throw new Error('Orders not found')
-
-    }
-
-
-
-})
+  if (orders) {
+    res.json(orders);
+  } else {
+    res.status(404);
+    throw new Error('Orders not found');
+  }
+});
 
 // @dec:    Update order to delivered
 // @route:  PUT /api/orders/:id/delivered
 // @access: Privet/Admin
-const updateOrderToDelivered = asyncHandler( async(req,res) => {
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
 
-    const order = await Order.findById(req.params.id)
-
-    if(order){
-
-    order.isDelivered = true
-    order.deliveredAt = Date.now()
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
 
     try {
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
     } catch (error) {
-
-        throw error
+      throw error;
     }
-
-    }else{
-        res.status(404)
-        throw new Error('Order not found')
-
-    }
-
-
-
-})
-
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
 
 export {
-    addOrderItems,
-    getOrderById,
-    updateOrderToPaid,
-    getMyOrders,
-    getOrders,
-    updateOrderToDelivered
-}
+  addOrderItems,
+  getOrderById,
+  updateOrderToPaid,
+  getMyOrders,
+  getOrders,
+  updateOrderToDelivered,
+};
